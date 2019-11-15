@@ -1,4 +1,5 @@
 const restaurants = require('../../data/sample.json');
+import { keys } from './helper';
 
 interface IRestaurant {
   name: String;
@@ -43,4 +44,25 @@ export function searchRestaurants(name: string) {
   const restaurantsList: IRestaurant[] = getRestaurants();
 
   return restaurantsList.find(restaurant => restaurant.name === name);
+}
+
+function isRestaurantNeeded(restaurant: IRestaurant, sortValue: number) {
+  const sortingValues = restaurant['sortingValues'];
+  const sortingValueKeys = keys(sortingValues);
+
+  for (const sortingValueKey of sortingValueKeys) {
+    if (sortingValues[sortingValueKey] === sortValue) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+export function sortRestaurantsByValues(sortValue: number) {
+  const restaurantsList: IRestaurant[] = getRestaurants();
+
+  return restaurantsList.filter(restaurant =>
+    isRestaurantNeeded(restaurant, sortValue),
+  );
 }

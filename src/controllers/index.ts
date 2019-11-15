@@ -38,3 +38,9 @@ export function sortRestaurantsByOpeningState() {
   });
   return [...open, ...orderAhead, ...closed];
 }
+
+export function searchRestaurants(name: string) {
+  const restaurantsList: IRestaurant[] = getRestaurants();
+
+  return restaurantsList.find(restaurant => restaurant.name === name);
+}

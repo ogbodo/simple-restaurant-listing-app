@@ -19,9 +19,10 @@ export function getRestaurants(): IRestaurant[] {
   return restaurants['restaurants'];
 }
 
-export function sortRestaurantsByOpeningState() {
-  const restaurantsList: IRestaurant[] = getRestaurants();
-
+//The parameter restaurantsList will get initialized by default if it's not supplied
+export function sortRestaurantsByOpeningState(
+  restaurantsList: IRestaurant[] = getRestaurants(),
+) {
   const open: IRestaurant[] = [];
   const orderAhead: IRestaurant[] = [];
   const closed: IRestaurant[] = [];
@@ -65,4 +66,35 @@ export function sortRestaurantsByValues(sortValue: number) {
   return restaurantsList.filter(restaurant =>
     isRestaurantNeeded(restaurant, sortValue),
   );
+}
+
+export function getRestaurantList(favorites: string[], sortValue: number) {
+  const sortedRestaurantsByValues: IRestaurant[] = sortRestaurantsByValues(
+    sortValue,
+  );
+
+  const sortedRestaurantsByOpeningState: IRestaurant[] = sortRestaurantsByOpeningState(
+    sortedRestaurantsByValues,
+  );
+
+  //Now make all favorite restaurants come at the top
+  const favoriteRestaurants: IRestaurant[] = [];
+  const otherRestaurants: IRestaurant[] = [];
+
+  sortedRestaurantsByOpeningState.forEach(restaurant => {
+    const found: string = favorites.find(
+      favorite => restaurant.name === favorite,
+    )!; //The exclamation mark (!) tells typescript that we are not expecting undefined value
+
+    if (found) {
+      favoriteRestaurants.push(restaurant);
+
+      //Remove found favorite from favorites
+      favorites.filter(favorite => favorite !== found);
+    } else {
+      otherRestaurants.push(restaurant);
+    }
+  });
+
+  return [...favoriteRestaurants, ...otherRestaurants];
 }

@@ -44,7 +44,10 @@ describe('Returns All Restaurants', () => {
     });
     test('Should return all restaurants sorted by minCost', () => {
       const restaurants = sortRestaurantsByValues('minCost');
-      console.log(restaurants);
+      expect(restaurants).toBeDefined();
+    });
+    test('Should return all restaurants sorted by topRestaurants', () => {
+      const restaurants = sortRestaurantsByValues('topRestaurants');
       expect(restaurants).toBeDefined();
     });
   });

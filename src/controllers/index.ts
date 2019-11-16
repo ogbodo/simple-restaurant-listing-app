@@ -61,7 +61,7 @@ export function sortRestaurantsByValues(sortBy: string) {
   } else if (isDesc(sortBy)) {
     sortDirection = 0;
   } else {
-    return [];
+    return restaurantsList;
   }
 
   return restaurantsList.sort((restaurant1: any, restaurant2: any) => {

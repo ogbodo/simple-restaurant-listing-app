@@ -36,6 +36,10 @@ describe('Returns All Restaurants', () => {
     });
     test('Should return all restaurants sorted by averageProductPrice', () => {
       const restaurants = sortRestaurantsByValues('averageProductPrice');
+      expect(restaurants).toBeDefined();
+    });
+    test('Should return all restaurants sorted by deliveryCosts', () => {
+      const restaurants = sortRestaurantsByValues('deliveryCosts');
       console.log(restaurants);
       expect(restaurants).toBeDefined();
     });

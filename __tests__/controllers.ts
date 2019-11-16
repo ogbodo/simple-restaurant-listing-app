@@ -16,8 +16,11 @@ describe('Returns All Restaurants', () => {
   describe('Returns all restaurants sorted by values', () => {
     test('Should return all restaurants sorted by best Match', () => {
       const restaurants = sortRestaurantsByValues('bestMatch');
+      expect(restaurants).toBeDefined();
+    });
+    test('Should return all restaurants sorted by newest', () => {
+      const restaurants = sortRestaurantsByValues('newest');
       console.log(restaurants);
-
       expect(restaurants).toBeDefined();
     });
   });

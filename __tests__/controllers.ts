@@ -3,6 +3,7 @@ import {
   sortRestaurantsByOpeningState,
   sortRestaurantsByValues,
   getRestaurantList,
+  searchRestaurants,
 } from '../src/controllers/index';
 
 describe('Returns All Restaurants', () => {
@@ -10,10 +11,31 @@ describe('Returns All Restaurants', () => {
     const restaurants = getRestaurants();
     expect(restaurants).toBeDefined();
   });
+  describe('Search for Restaurant', () => {
+    test('Should get a restaurant by name', () => {
+      const restaurant = searchRestaurants('Lunchpakketdienst');
+      expect(restaurant).toBeDefined();
+      expect(restaurant).toEqual({
+        name: 'Lunchpakketdienst',
+        status: 'open',
+        sortingValues: {
+          bestMatch: 306.0,
+          newest: 259.0,
+          ratingAverage: 3.5,
+          distance: 14201,
+          popularity: 0.0,
+          averageProductPrice: 4465,
+          deliveryCosts: 500,
+          minCost: 5000,
+        },
+      });
+    });
+  });
   test('Should return all restaurants sorted by opening state', () => {
     const restaurants = sortRestaurantsByOpeningState();
     expect(restaurants).toBeDefined();
   });
+
   describe('Returns all restaurants sorted by values', () => {
     test('Should return all restaurants sorted by best Match', () => {
       const restaurants = sortRestaurantsByValues('bestMatch');

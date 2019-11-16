@@ -1,22 +1,6 @@
 const restaurants = require('../../data/sample.json');
-import { keys } from './helper';
+import { IRestaurant, isAsc, isDesc } from './helper';
 
-interface ISortValue {
-  bestMatch: number;
-  newest: number;
-  ratingAverage: number;
-  distance: number;
-  popularity: number;
-  averageProductPrice: number;
-  deliveryCosts: number;
-  minCost: number;
-  topRestaurants?: number;
-}
-interface IRestaurant {
-  name: String;
-  status: String;
-  sortingValues: ISortValue;
-}
 export function getRestaurants(): IRestaurant[] {
   return restaurants['restaurants'];
 }
@@ -50,36 +34,46 @@ export function searchRestaurants(name: string) {
   return restaurantsList.find(restaurant => restaurant.name === name);
 }
 
-export function sortRestaurantsByValues(sortObject: ISortValue) {
+export function sortRestaurantsByValues(sortBy: string) {
   let restaurantsList: IRestaurant[] = getRestaurants();
-  const sortingObjectKey = keys(sortObject)[0];
 
-  /**
-   * If this sorting criteria is for top restaurants, extend the object  key to include
-   * topRestaurants which should be a child of sortingValues
-   */
-  if (sortingObjectKey === 'topRestaurants') {
+  if (sortBy === 'topRestaurants') {
+    /**
+     * If this sorting criteria is for top restaurants, extend the object  key to include
+     * topRestaurants which should be a child of sortingValues
+     */
     restaurantsList = restaurantsList.map(restaurant => {
+      let topRestaurant = 0;
       const { distance, popularity, ratingAverage } = restaurant.sortingValues;
-      const topRestaurant = distance * popularity + ratingAverage;
+      if (distance && popularity && ratingAverage) {
+        topRestaurant = distance * popularity + ratingAverage;
+      }
 
       restaurant['sortingValues'].topRestaurants = topRestaurant;
 
       return restaurant;
     });
   }
+  //Determine whether to sort in ascending or descending order based on the sort value
+  let sortDirection = 0;
+  if (isAsc(sortBy)) {
+    sortDirection = 1;
+  } else if (isDesc(sortBy)) {
+    sortDirection = 0;
+  } else {
+    return [];
+  }
 
-  return restaurantsList.sort((restaurant1, restaurant2) => {
-    const a = restaurant1['sortingValues'][sortingObjectKey]!;
-    const b = restaurant2['sortingValues'][sortingObjectKey]!;
-
-    return a - b;
+  return restaurantsList.sort((restaurant1: any, restaurant2: any) => {
+    const a = restaurant1['sortingValues'][sortBy]!;
+    const b = restaurant2['sortingValues'][sortBy]!;
+    return sortDirection > 0 ? a - b : b - a;
   });
 }
 
-export function getRestaurantList(favorites: string[], sortObject: ISortValue) {
+export function getRestaurantList(favorites: string[], sortBy: string) {
   //   const updateObjects = addTopRestaurantKey(sortedRestaurantsByValues)
-  const sortedRestaurantsByValues = sortRestaurantsByValues(sortObject);
+  const sortedRestaurantsByValues = sortRestaurantsByValues(sortBy);
 
   const sortedRestaurantsByOpeningState = sortRestaurantsByOpeningState(
     sortedRestaurantsByValues,

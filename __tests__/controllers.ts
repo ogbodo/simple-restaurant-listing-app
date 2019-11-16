@@ -1,6 +1,7 @@
 import {
   getRestaurants,
   sortRestaurantsByOpeningState,
+  sortRestaurantsByValues,
 } from '../src/controllers/index';
 
 describe('Returns All Restaurants', () => {
@@ -11,5 +12,13 @@ describe('Returns All Restaurants', () => {
   test('Should return all restaurants sorted by opening state', () => {
     const restaurants = sortRestaurantsByOpeningState();
     expect(restaurants).toBeDefined();
+  });
+  describe('Returns all restaurants sorted by values', () => {
+    test('Should return all restaurants sorted by best Match', () => {
+      const restaurants = sortRestaurantsByValues('bestMatch');
+      console.log(restaurants);
+
+      expect(restaurants).toBeDefined();
+    });
   });
 });

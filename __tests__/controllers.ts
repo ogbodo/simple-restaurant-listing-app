@@ -2,6 +2,7 @@ import {
   getRestaurants,
   sortRestaurantsByOpeningState,
   sortRestaurantsByValues,
+  getRestaurantList,
 } from '../src/controllers/index';
 
 describe('Returns All Restaurants', () => {
@@ -48,6 +49,13 @@ describe('Returns All Restaurants', () => {
     });
     test('Should return all restaurants sorted by topRestaurants', () => {
       const restaurants = sortRestaurantsByValues('topRestaurants');
+      expect(restaurants).toBeDefined();
+    });
+  });
+  describe('Returns all restaurants sorted by favorites', () => {
+    test('Should return all restaurants sorted by favorites', () => {
+      const favorites = ['Tandoori Express', 'Aarti 2', 'Pizza Heart'];
+      const restaurants = getRestaurantList(favorites, 'none');
       expect(restaurants).toBeDefined();
     });
   });

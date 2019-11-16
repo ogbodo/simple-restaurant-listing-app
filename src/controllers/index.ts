@@ -1,26 +1,28 @@
 const restaurants = require('../../data/sample.json');
 import { keys } from './helper';
 
+interface ISortValue {
+  bestMatch: number;
+  newest: number;
+  ratingAverage: number;
+  distance: number;
+  popularity: number;
+  averageProductPrice: number;
+  deliveryCosts: number;
+  minCost: number;
+  topRestaurants?: number;
+}
 interface IRestaurant {
   name: String;
   status: String;
-  sortingValues: {
-    bestMatch: Number;
-    newest: Number;
-    ratingAverage: Number;
-    distance: Number;
-    popularity: Number;
-    averageProductPrice: Number;
-    deliveryCosts: Number;
-    minCost: Number;
-  };
+  sortingValues: ISortValue;
 }
-export function getRestaurants(): IRestaurant[] {
+function getRestaurants(): IRestaurant[] {
   return restaurants['restaurants'];
 }
 
 //The parameter restaurantsList will get initialized by default if it's not supplied
-export function sortRestaurantsByOpeningState(
+function sortRestaurantsByOpeningState(
   restaurantsList: IRestaurant[] = getRestaurants(),
 ) {
   const open: IRestaurant[] = [];
@@ -38,6 +40,7 @@ export function sortRestaurantsByOpeningState(
       open.push(restaurant);
     }
   });
+
   return [...open, ...orderAhead, ...closed];
 }
 
@@ -47,33 +50,38 @@ export function searchRestaurants(name: string) {
   return restaurantsList.find(restaurant => restaurant.name === name);
 }
 
-function isRestaurantNeeded(restaurant: IRestaurant, sortValue: number) {
-  const sortingValues = restaurant['sortingValues'];
-  const sortingValueKeys = keys(sortingValues);
+function sortRestaurantsByValues(sortObject: ISortValue) {
+  let restaurantsList: IRestaurant[] = getRestaurants();
+  const sortingObjectKey = keys(sortObject)[0];
 
-  for (const sortingValueKey of sortingValueKeys) {
-    if (sortingValues[sortingValueKey] === sortValue) {
-      return true;
-    }
+  /**
+   * If this sorting criteria is for top restaurants, extend the object  key to include
+   * topRestaurants which should be a child of sortingValues
+   */
+  if (sortingObjectKey === 'topRestaurants') {
+    restaurantsList = restaurantsList.map(restaurant => {
+      const { distance, popularity, ratingAverage } = restaurant.sortingValues;
+      const topRestaurant = distance * popularity + ratingAverage;
+
+      restaurant['sortingValues'].topRestaurants = topRestaurant;
+
+      return restaurant;
+    });
   }
 
-  return false;
+  return restaurantsList.sort((restaurant1, restaurant2) => {
+    const a = restaurant1['sortingValues'][sortingObjectKey]!;
+    const b = restaurant2['sortingValues'][sortingObjectKey]!;
+
+    return a - b;
+  });
 }
 
-export function sortRestaurantsByValues(sortValue: number) {
-  const restaurantsList: IRestaurant[] = getRestaurants();
+export function getRestaurantList(favorites: string[], sortObject: ISortValue) {
+  //   const updateObjects = addTopRestaurantKey(sortedRestaurantsByValues)
+  const sortedRestaurantsByValues = sortRestaurantsByValues(sortObject);
 
-  return restaurantsList.filter(restaurant =>
-    isRestaurantNeeded(restaurant, sortValue),
-  );
-}
-
-export function getRestaurantList(favorites: string[], sortValue: number) {
-  const sortedRestaurantsByValues: IRestaurant[] = sortRestaurantsByValues(
-    sortValue,
-  );
-
-  const sortedRestaurantsByOpeningState: IRestaurant[] = sortRestaurantsByOpeningState(
+  const sortedRestaurantsByOpeningState = sortRestaurantsByOpeningState(
     sortedRestaurantsByValues,
   );
 

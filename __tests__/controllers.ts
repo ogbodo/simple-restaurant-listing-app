@@ -28,6 +28,10 @@ describe('Returns All Restaurants', () => {
     });
     test('Should return all restaurants sorted by distance', () => {
       const restaurants = sortRestaurantsByValues('distance');
+      expect(restaurants).toBeDefined();
+    });
+    test('Should return all restaurants sorted by popularity', () => {
+      const restaurants = sortRestaurantsByValues('popularity');
       console.log(restaurants);
       expect(restaurants).toBeDefined();
     });

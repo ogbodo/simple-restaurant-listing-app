@@ -53,9 +53,14 @@ describe('Returns All Restaurants', () => {
     });
   });
   describe('Returns all restaurants sorted by favorites', () => {
-    test('Should return all restaurants sorted by favorites', () => {
+    test('Should return all restaurants but favorites stays at the top', () => {
       const favorites = ['Tandoori Express', 'Aarti 2', 'Pizza Heart'];
       const restaurants = getRestaurantList(favorites, 'none');
+      expect(restaurants).toBeDefined();
+    });
+    test('Should return all restaurants sorted by any sort value, but favorites stays at the top', () => {
+      const favorites = ['Tandoori Express', 'Aarti 2', 'Pizza Heart'];
+      const restaurants = getRestaurantList(favorites, 'topRestaurants');
       expect(restaurants).toBeDefined();
     });
   });

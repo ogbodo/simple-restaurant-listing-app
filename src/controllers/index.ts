@@ -17,12 +17,12 @@ interface IRestaurant {
   status: String;
   sortingValues: ISortValue;
 }
-function getRestaurants(): IRestaurant[] {
+export function getRestaurants(): IRestaurant[] {
   return restaurants['restaurants'];
 }
 
 //The parameter restaurantsList will get initialized by default if it's not supplied
-function sortRestaurantsByOpeningState(
+export function sortRestaurantsByOpeningState(
   restaurantsList: IRestaurant[] = getRestaurants(),
 ) {
   const open: IRestaurant[] = [];
@@ -50,7 +50,7 @@ export function searchRestaurants(name: string) {
   return restaurantsList.find(restaurant => restaurant.name === name);
 }
 
-function sortRestaurantsByValues(sortObject: ISortValue) {
+export function sortRestaurantsByValues(sortObject: ISortValue) {
   let restaurantsList: IRestaurant[] = getRestaurants();
   const sortingObjectKey = keys(sortObject)[0];
 

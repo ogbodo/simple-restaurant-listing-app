@@ -20,6 +20,10 @@ describe('Returns All Restaurants', () => {
     });
     test('Should return all restaurants sorted by newest', () => {
       const restaurants = sortRestaurantsByValues('newest');
+      expect(restaurants).toBeDefined();
+    });
+    test('Should return all restaurants sorted by ratingAverage', () => {
+      const restaurants = sortRestaurantsByValues('ratingAverage');
       console.log(restaurants);
       expect(restaurants).toBeDefined();
     });

@@ -24,6 +24,10 @@ describe('Returns All Restaurants', () => {
     });
     test('Should return all restaurants sorted by ratingAverage', () => {
       const restaurants = sortRestaurantsByValues('ratingAverage');
+      expect(restaurants).toBeDefined();
+    });
+    test('Should return all restaurants sorted by distance', () => {
+      const restaurants = sortRestaurantsByValues('distance');
       console.log(restaurants);
       expect(restaurants).toBeDefined();
     });

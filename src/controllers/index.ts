@@ -35,9 +35,9 @@ export function sortRestaurantsByOpeningState(
     if (status === 'open') {
       open.push(restaurant);
     } else if (status === 'order ahead') {
-      open.push(restaurant);
+      orderAhead.push(restaurant);
     } else if (status === 'closed') {
-      open.push(restaurant);
+      closed.push(restaurant);
     }
   });
 

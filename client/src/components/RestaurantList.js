@@ -20,6 +20,7 @@ function RestaurantList() {
   const [searchState, setSearchState] = useState({
     searchValue: '',
     isLoading: false,
+    data: [],
   });
 
   function onSortItemClicked(_e, { options, value }) {
@@ -31,7 +32,7 @@ function RestaurantList() {
   }
 
   function onChange(_e, { value }) {
-    setSearchState({ isLoading: true, searchValue: value });
+    setSearchState({ isLoading: true, searchValue: value, data: [] });
   }
 
   useEffect(() => {
@@ -71,8 +72,11 @@ function RestaurantList() {
       searchRestaurants(searchState.searchValue)
         .then(restaurant => {
           const { status } = restaurant;
+
           if (status === 200) {
-            setRestaurants([restaurant.data]);
+            setSearchState(oldState => {
+              return { ...oldState, data: [restaurant.data] };
+            });
           } else {
             toast.error(restaurant.statusText);
           }
@@ -86,6 +90,18 @@ function RestaurantList() {
         });
     }
   }, [searchState.searchValue, searchState.isLoading]);
+
+  function PopulateData({ restaurant }) {
+    return (
+      <RestaurantDescriptionCard
+        restaurant={restaurant}
+        onChangeFavorite={onChangeFavorite}
+        sortingValue={sortingValue}
+        isFavorite={favorites.some(favorite => favorite === restaurant.name)}
+        key={restaurant.name}
+      />
+    );
+  }
 
   return (
     <div style={{ padding: 50 }}>
@@ -111,17 +127,13 @@ function RestaurantList() {
         </div>
         <Grid.Row className="tbody" style={{ textAlign: 'center' }}>
           {restaurants.length > 0
-            ? restaurants.map(restaurant => (
-                <RestaurantDescriptionCard
-                  restaurant={restaurant}
-                  onChangeFavorite={onChangeFavorite}
-                  sortingValue={sortingValue}
-                  isFavorite={favorites.some(
-                    favorite => favorite === restaurant.name,
-                  )}
-                  key={restaurant.name}
-                />
-              ))
+            ? searchState.data.length > 0
+              ? searchState.data.map(restaurant => (
+                  <PopulateData restaurant={restaurant} />
+                ))
+              : restaurants.map(restaurant => (
+                  <PopulateData restaurant={restaurant} />
+                ))
             : restaurants.length === 0 && (
                 <Card style={{ color: '#e94d1c', fontWeight: 'bold' }}>
                   No data to display!

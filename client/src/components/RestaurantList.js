@@ -22,8 +22,8 @@ function RestaurantList() {
     isLoading: false,
   });
 
-  function onSortItemClicked(_e, selectedSort) {
-    setSortingValue(selectedSort);
+  function onSortItemClicked(_e, { options, value }) {
+    setSortingValue(() => options.find(item => item.value === value));
   }
 
   function onChangeFavorite(restaurantName) {

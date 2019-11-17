@@ -11,7 +11,6 @@ import {
 } from '../helpers.js/http';
 
 //Components
-import SortValues from './SortValues';
 import RestaurantDescriptionCard from './RestaurantDescriptionCard';
 
 function RestaurantList() {
@@ -81,7 +80,10 @@ function RestaurantList() {
           <Grid.Column className="tbody" style={{ textAlign: 'center' }}>
             {restaurants.length > 0
               ? restaurants.map(restaurant => (
-                  <RestaurantDescriptionCard restaurant={restaurant} />
+                  <RestaurantDescriptionCard
+                    restaurant={restaurant}
+                    onAddFavorite={onAddFavorite}
+                  />
                 ))
               : null}
           </Grid.Column>

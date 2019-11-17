@@ -3,6 +3,14 @@ import request from 'supertest';
 import app from '../src/app';
 
 describe('Server', () => {
+  test(' /api endpoint', async () => {
+    const result = await request(app)
+      .get('/api')
+      .expect('Content-Type', /json/);
+    expect(result.status).toBe(200);
+    expect(result.body.data).toBeDefined();
+  });
+
   test(' /api/sort-restaurants endpoint', async () => {
     const result = await request(app)
       .get('/api/sort-restaurants')

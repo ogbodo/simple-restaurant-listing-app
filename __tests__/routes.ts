@@ -3,10 +3,15 @@ import request from 'supertest';
 import app from '../src/app';
 
 describe('Server', () => {
-  test('Has a /api endpoint', () => {
-    return request(app)
+  test(' /api endpoint', async () => {
+    const result = await request(app)
       .get('/api')
-      .expect('Content-Type', /json/)
-      .expect(200, { message: { hello: 'Hello World' } });
+      .send({
+        favorites: ['Tandoori Express', 'Aarti 2', 'Pizza Heart'],
+        sortBy: 'bestMatch',
+      })
+      .expect('Content-Type', /json/);
+    expect(result.status).toBe(200);
+    expect(result.body.data).toBeDefined();
   });
 });

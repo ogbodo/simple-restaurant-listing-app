@@ -1,12 +1,11 @@
 import express from 'express';
-import { getRestaurantList } from '../controllers/index';
+import { getRestaurantList, searchRestaurants } from '../controllers/index';
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
-  const { favorites, sortObject } = req.body.payload;
-  const restaurants = getRestaurantList(favorites, sortObject);
-
+router.get('/', async (req, res) => {
+  const { favorites, sortBy } = req.body;
+  const restaurants = await getRestaurantList(favorites, sortBy);
   res.status(200).json({ data: restaurants });
 });
 

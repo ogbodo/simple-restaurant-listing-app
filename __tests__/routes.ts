@@ -26,6 +26,17 @@ describe('Server', () => {
       expect(result.status).toBe(200);
       expect(result.body.data).toBeDefined();
     });
+
+    test(' for a case where sortingValue  is not supplied', async () => {
+      const result = await request(app)
+        .get('/api')
+        .send({
+          favorites: ['Tandoori Express', 'Aarti 2', 'Pizza Heart'],
+        })
+        .expect('Content-Type', /json/);
+      expect(result.status).toBe(200);
+      expect(result.body.data).toBeDefined();
+    });
   });
 
   describe(' /api/restaurants/:name endpoint', () => {

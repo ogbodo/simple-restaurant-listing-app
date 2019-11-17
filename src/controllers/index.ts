@@ -6,9 +6,9 @@ export function getRestaurants(): IRestaurant[] {
 }
 
 //The parameter restaurantsList will get initialized by default if it's not supplied
-export function sortRestaurantsByOpeningState(
-  restaurantsList: IRestaurant[] = getRestaurants(),
-) {
+export function sortRestaurantsByOpeningState() {
+  const restaurantsList: IRestaurant[] = getRestaurants();
+
   const open: IRestaurant[] = [];
   const orderAhead: IRestaurant[] = [];
   const closed: IRestaurant[] = [];

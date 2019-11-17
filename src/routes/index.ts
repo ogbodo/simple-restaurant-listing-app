@@ -14,7 +14,7 @@ router.get('/', async (_req, res) => {
 });
 
 //sort restaurants
-router.get('/sort-restaurants', async (req, res) => {
+router.post('/sort-restaurants', async (req, res) => {
   const { favorites, sortBy } = req.body;
   const restaurants = await getRestaurantList(favorites, sortBy);
   res.status(200).json({ data: restaurants });

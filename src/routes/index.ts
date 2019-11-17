@@ -1,9 +1,20 @@
 import express from 'express';
-import { getRestaurantList, searchRestaurants } from '../controllers/index';
+import {
+  getRestaurantList,
+  searchRestaurants,
+  getRestaurants,
+} from '../controllers/index';
 
 const router = express.Router();
 
-router.get('/', async (req, res) => {
+//gets all restaurants
+router.get('/', async (_req, res) => {
+  const restaurants = await getRestaurants();
+  res.status(200).json({ data: restaurants });
+});
+
+//sort restaurants
+router.post('/sort-restaurants', async (req, res) => {
   const { favorites, sortBy } = req.body;
   const restaurants = await getRestaurantList(favorites, sortBy);
   res.status(200).json({ data: restaurants });

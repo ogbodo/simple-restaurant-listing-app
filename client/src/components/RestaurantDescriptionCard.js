@@ -3,10 +3,10 @@ import { Radio } from 'semantic-ui-react';
 
 function RestaurantDescriptionCard(props) {
   const {
-    restaurant: { name = 'Tandoori Express', status = 'order ahead' },
+    restaurant: { name, status },
     onChangeFavorite,
-    isFavorite = true,
-    sortingValue = 'ratingAverage',
+    isFavorite,
+    sortingValue,
   } = props;
 
   let color = 'red',

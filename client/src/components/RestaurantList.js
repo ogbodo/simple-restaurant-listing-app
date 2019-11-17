@@ -14,7 +14,7 @@ import {
 import RestaurantDescriptionCard from './RestaurantDescriptionCard';
 
 function RestaurantList() {
-  const [sortingValue, setSortingValue] = useState(sortValues[2]);
+  const [sortingValue, setSortingValue] = useState(sortValues[0]);
   const [favorites, setFavorites] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
   const [searchState, setSearchState] = useState({
@@ -50,18 +50,20 @@ function RestaurantList() {
   }, []);
 
   useEffect(() => {
-    sortRestaurants(favorites, sortingValue.value)
-      .then(sortedRestaurants => {
-        const { status } = sortedRestaurants;
-        if (status === 200) {
-          setRestaurants(sortedRestaurants.data);
-        } else {
-          toast.error(sortedRestaurants.statusText);
-        }
-      })
-      .catch(error => {
-        toast.error(error.message);
-      });
+    if (sortingValue.value) {
+      sortRestaurants(favorites, sortingValue.value)
+        .then(sortedRestaurants => {
+          const { status } = sortedRestaurants;
+          if (status === 200) {
+            setRestaurants(sortedRestaurants.data);
+          } else {
+            toast.error(sortedRestaurants.statusText);
+          }
+        })
+        .catch(error => {
+          toast.error(error.message);
+        });
+    }
   }, [sortingValue, favorites]);
 
   useEffect(() => {

@@ -27,3 +27,11 @@
   /* max-height: 550px; */
   overflow: auto;
 }
+
+.restaurantCardStyle > div:hover {
+  /* border-bottom: #fff solid 5px; */
+  background: #fff;
+  transition: all linear 0.2s;
+  /* border-radius: 8px; */
+  box-shadow: 0px 8px 8px rgba(0, 0, 0, 0.14);
+}

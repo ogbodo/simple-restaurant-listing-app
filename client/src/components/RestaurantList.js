@@ -14,7 +14,7 @@ import {
 import RestaurantDescriptionCard from './RestaurantDescriptionCard';
 
 function RestaurantList() {
-  const [sortingValue, setSortingValue] = useState(sortValues[0].value);
+  const [sortingValue, setSortingValue] = useState(sortValues[0]);
   const [favorites, setFavorites] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
   const [searchState, setSearchState] = useState({
@@ -22,11 +22,11 @@ function RestaurantList() {
     isLoading: false,
   });
 
-  function onSortItemClicked(_e, { value }) {
-    setSortingValue(value);
+  function onSortItemClicked(_e, selectedSort) {
+    setSortingValue(selectedSort);
   }
 
-  function onAddFavorite(restaurantName) {
+  function onChangeFavorite(restaurantName) {
     setFavorites(restaurantName);
   }
 
@@ -40,7 +40,7 @@ function RestaurantList() {
   }, []);
 
   useEffect(() => {
-    const sortedRestaurants = sortRestaurants(favorites, sortingValue);
+    const sortedRestaurants = sortRestaurants(favorites, sortingValue.value);
     setRestaurants(sortedRestaurants);
   }, [sortingValue, favorites]);
 
@@ -82,7 +82,11 @@ function RestaurantList() {
               ? restaurants.map(restaurant => (
                   <RestaurantDescriptionCard
                     restaurant={restaurant}
-                    onAddFavorite={onAddFavorite}
+                    onChangeFavorite={onChangeFavorite}
+                    sortingValue={sortingValue}
+                    isFavorite={favorites.some(
+                      favorite => favorite === restaurant.name,
+                    )}
                   />
                 ))
               : null}

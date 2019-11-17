@@ -18,7 +18,10 @@ function RestaurantList() {
   const [sortingValue, setSortingValue] = useState(sortValues[0].value);
   const [favorites, setFavorites] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
-  const [searchValue, setSearchValue] = useState('');
+  const [searchState, setSearchState] = useState({
+    searchValue: '',
+    isLoading: false,
+  });
 
   function onSortItemClicked(_e, { value }) {
     setSortingValue(value);
@@ -29,7 +32,7 @@ function RestaurantList() {
   }
 
   function onChange(_e, { value }) {
-    setSearchValue(value);
+    setSearchState({ isLoading: true, searchValue: value });
   }
 
   useEffect(() => {
@@ -45,6 +48,10 @@ function RestaurantList() {
   useEffect(() => {
     const restaurant = searchRestaurants(searchValue);
     setRestaurants([restaurant]);
+
+    setSearchState(oldState => {
+      return { ...oldState, isLoading: false };
+    });
   }, [searchValue]);
 
   return (

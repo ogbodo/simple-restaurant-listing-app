@@ -73,7 +73,10 @@ export function sortRestaurantsByValues(
   });
 }
 
-export function getRestaurantList(favorites: string[], sortBy: string) {
+export function getRestaurantList(
+  favorites: string[] = [],
+  sortBy: string = '',
+) {
   const sortedRestaurantsByOpeningState = sortRestaurantsByOpeningState();
   const sortedRestaurantsByValues = sortRestaurantsByValues(
     sortBy,

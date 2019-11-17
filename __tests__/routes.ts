@@ -15,6 +15,19 @@ describe('Server', () => {
     expect(result.body.data).toBeDefined();
   });
 
+  describe('Considering some edge cases on /api endpoint', () => {
+    test(' for a case where favorite  is not supplied', async () => {
+      const result = await request(app)
+        .get('/api')
+        .send({
+          sortBy: 'bestMatch',
+        })
+        .expect('Content-Type', /json/);
+      expect(result.status).toBe(200);
+      expect(result.body.data).toBeDefined();
+    });
+  });
+
   describe(' /api/restaurants/:name endpoint', () => {
     test(' should return 200 status code', async () => {
       const restaurantName = 'Daily Sushi';

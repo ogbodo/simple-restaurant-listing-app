@@ -26,8 +26,8 @@ function RestaurantList() {
     setSortingValue(() => options.find(item => item.value === value));
   }
 
-  function onChangeFavorite(restaurantName) {
-    setFavorites(restaurantName);
+  function onChangeFavorite(_e, { value }) {
+    setFavorites(oldState => [...oldState, value]);
   }
 
   function onChange(_e, { value }) {
@@ -50,7 +50,7 @@ function RestaurantList() {
   }, []);
 
   useEffect(() => {
-    if (sortingValue.value) {
+    if (sortingValue.value || favorites.length > 0) {
       sortRestaurants(favorites, sortingValue.value)
         .then(sortedRestaurants => {
           const { status } = sortedRestaurants;

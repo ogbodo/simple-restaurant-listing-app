@@ -20,7 +20,7 @@ export function sortRestaurantsByOpeningState() {
       open.push(restaurant);
     } else if (status === 'order ahead') {
       orderAhead.push(restaurant);
-    } else if (status === 'closed') {
+    } else {
       closed.push(restaurant);
     }
   });

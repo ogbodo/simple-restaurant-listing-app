@@ -3,9 +3,9 @@ import request from 'supertest';
 import app from '../src/app';
 
 describe('Server', () => {
-  test(' /api endpoint', async () => {
+  test(' /api/sort-restaurants endpoint', async () => {
     const result = await request(app)
-      .get('/api')
+      .get('/api/sort-restaurants')
       .send({
         favorites: ['Tandoori Express', 'Aarti 2', 'Pizza Heart'],
         sortBy: 'bestMatch',
@@ -15,10 +15,10 @@ describe('Server', () => {
     expect(result.body.data).toBeDefined();
   });
 
-  describe('Considering some edge cases on /api endpoint', () => {
+  describe('Considering some edge cases on /api/sort-restaurants endpoint', () => {
     test(' for a case where favorite  is not supplied', async () => {
       const result = await request(app)
-        .get('/api')
+        .get('/api/sort-restaurants')
         .send({
           sortBy: 'bestMatch',
         })
@@ -29,7 +29,7 @@ describe('Server', () => {
 
     test(' for a case where sortingValue  is not supplied', async () => {
       const result = await request(app)
-        .get('/api')
+        .get('/api/sort-restaurants')
         .send({
           favorites: ['Tandoori Express', 'Aarti 2', 'Pizza Heart'],
         })
@@ -40,7 +40,7 @@ describe('Server', () => {
 
     test(' for a case where neither sortingValue nor favorite was supplied', async () => {
       const result = await request(app)
-        .get('/api')
+        .get('/api/sort-restaurants')
         .expect('Content-Type', /json/);
       expect(result.status).toBe(200);
       expect(result.body.data).toBeDefined();

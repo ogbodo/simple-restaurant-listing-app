@@ -9,6 +9,13 @@ router.get('/', async (req, res) => {
   res.status(200).json({ data: restaurants });
 });
 
+//sort restaurants
+router.get('/sort-restaurants', async (req, res) => {
+  const { favorites, sortBy } = req.body;
+  const restaurants = await getRestaurantList(favorites, sortBy);
+  res.status(200).json({ data: restaurants });
+});
+
 //Search for a restaurant by name
 router.get('/restaurants/:name', async (req, res) => {
   const { name } = req.params;

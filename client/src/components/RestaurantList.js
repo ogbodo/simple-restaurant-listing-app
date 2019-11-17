@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Grid, Dropdown } from 'semantic-ui-react';
+import { Grid, Dropdown, Input } from 'semantic-ui-react';
 import { toast } from 'react-toastify';
 
 //helpers
@@ -45,13 +45,13 @@ function RestaurantList() {
   }, [sortingValue, favorites]);
 
   useEffect(() => {
-    const restaurant = searchRestaurants(searchValue);
+    const restaurant = searchRestaurants(searchState.searchValue);
     setRestaurants([restaurant]);
 
     setSearchState(oldState => {
       return { ...oldState, isLoading: false };
     });
-  }, [searchValue]);
+  }, [searchState.searchValue]);
 
   return (
     <>

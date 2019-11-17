@@ -14,4 +14,29 @@ describe('Server', () => {
     expect(result.status).toBe(200);
     expect(result.body.data).toBeDefined();
   });
+
+  describe(' /api/restaurants/:name endpoint', () => {
+    test(' should return 200 status code', async () => {
+      const restaurantName = 'Daily Sushi';
+      const result = await request(app)
+        .get(`/api/restaurants/${restaurantName}`)
+        .expect('Content-Type', /json/);
+      expect(result.status).toBe(200);
+      expect(result.body.data).toBeDefined();
+      expect(result.body.data).toEqual({
+        name: 'Daily Sushi',
+        status: 'closed',
+        sortingValues: {
+          bestMatch: 9.0,
+          newest: 221.0,
+          ratingAverage: 4.0,
+          distance: 1911,
+          popularity: 6.0,
+          averageProductPrice: 1327,
+          deliveryCosts: 200,
+          minCost: 1000,
+        },
+      });
+    });
+  });
 });

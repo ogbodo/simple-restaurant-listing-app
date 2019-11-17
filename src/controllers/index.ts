@@ -6,9 +6,9 @@ export function getRestaurants(): IRestaurant[] {
 }
 
 //The parameter restaurantsList will get initialized by default if it's not supplied
-export function sortRestaurantsByOpeningState() {
-  const restaurantsList: IRestaurant[] = getRestaurants();
-
+export function sortRestaurantsByOpeningState(
+  restaurantsList: IRestaurant[] = getRestaurants(),
+) {
   const open: IRestaurant[] = [];
   const orderAhead: IRestaurant[] = [];
   const closed: IRestaurant[] = [];
@@ -38,10 +38,9 @@ export function searchRestaurants(name: string) {
 }
 
 //The parameter restaurantsList will get initialized by default if it's not supplied
-export function sortRestaurantsByValues(
-  sortBy: string,
-  restaurantsList: IRestaurant[] = getRestaurants(),
-) {
+export function sortRestaurantsByValues(sortBy: string) {
+  let restaurantsList = getRestaurants();
+
   if (sortBy === 'topRestaurants') {
     /**
      * If this sorting criteria is for top restaurants, extend the object  key to include
@@ -80,17 +79,17 @@ export function getRestaurantList(
   favorites: string[] = [],
   sortBy: string = '',
 ) {
-  const sortedRestaurantsByOpeningState = sortRestaurantsByOpeningState();
-  const sortedRestaurantsByValues = sortRestaurantsByValues(
-    sortBy,
-    sortedRestaurantsByOpeningState,
+  const sortedRestaurantsByValues = sortRestaurantsByValues(sortBy);
+
+  const sortedRestaurantsByOpeningState = sortRestaurantsByOpeningState(
+    sortedRestaurantsByValues,
   );
 
   //Now make all favorite restaurants come at the top
   const favoriteRestaurants: IRestaurant[] = [];
   const otherRestaurants: IRestaurant[] = [];
 
-  sortedRestaurantsByValues.forEach(restaurant => {
+  sortedRestaurantsByOpeningState.forEach(restaurant => {
     const found: string = favorites.find(
       favorite => restaurant.name === favorite,
     )!; //The exclamation mark (!) tells typescript that we are not expecting undefined value

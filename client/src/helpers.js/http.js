@@ -34,9 +34,11 @@ export async function sortRestaurants(favorites, sortBy) {
 }
 
 //Search for a restaurant by name
-export async function searchRestaurants(restaurantName) {
+export async function searchRestaurants(name) {
   try {
-    const response = await axios.get(`/api/restaurants/${restaurantName}`);
+    const response = await axios.get(`/api/restaurants/${name}`);
+    console.log(response);
+
     const { status, statusText } = response;
     return {
       data: response.data.data,

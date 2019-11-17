@@ -1,7 +1,7 @@
 export const sortValues = [
   {
     key: '',
-    text: 'None',
+    text: 'Select Sorting Value',
     value: '',
   },
   {

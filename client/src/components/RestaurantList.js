@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Grid, Dropdown, Input } from 'semantic-ui-react';
+import { Grid, Dropdown, Input, Card } from 'semantic-ui-react';
 import { toast } from 'react-toastify';
 
 //helpers
@@ -14,7 +14,7 @@ import {
 import RestaurantDescriptionCard from './RestaurantDescriptionCard';
 
 function RestaurantList() {
-  const [sortingValue, setSortingValue] = useState(sortValues[0]);
+  const [sortingValue, setSortingValue] = useState(sortValues[2]);
   const [favorites, setFavorites] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
   const [searchState, setSearchState] = useState({
@@ -35,30 +35,61 @@ function RestaurantList() {
   }
 
   useEffect(() => {
-    const restaurants = getRestaurants();
-    setRestaurants(restaurants);
+    getRestaurants()
+      .then(restaurants => {
+        const { status } = restaurants;
+        if (status === 200) {
+          setRestaurants(restaurants.data);
+        } else {
+          toast.error(restaurants.statusText);
+        }
+      })
+      .catch(error => {
+        toast.error(error.message);
+      });
   }, []);
 
   useEffect(() => {
-    const sortedRestaurants = sortRestaurants(favorites, sortingValue.value);
-    setRestaurants(sortedRestaurants);
+    sortRestaurants(favorites, sortingValue.value)
+      .then(sortedRestaurants => {
+        const { status } = sortedRestaurants;
+        if (status === 200) {
+          setRestaurants(sortedRestaurants.data);
+        } else {
+          toast.error(sortedRestaurants.statusText);
+        }
+      })
+      .catch(error => {
+        toast.error(error.message);
+      });
   }, [sortingValue, favorites]);
 
   useEffect(() => {
-    const restaurant = searchRestaurants(searchState.searchValue);
-    setRestaurants([restaurant]);
+    if (searchState.isLoading) {
+      searchRestaurants(searchState.searchValue)
+        .then(restaurant => {
+          const { status } = restaurant;
+          if (status === 200) {
+            setRestaurants([restaurant.data]);
+          } else {
+            toast.error(restaurant.statusText);
+          }
 
-    setSearchState(oldState => {
-      return { ...oldState, isLoading: false };
-    });
-  }, [searchState.searchValue]);
+          setSearchState(oldState => {
+            return { ...oldState, isLoading: false };
+          });
+        })
+        .catch(error => {
+          toast.error(error.message);
+        });
+    }
+  }, [searchState.searchValue, searchState.isLoading]);
 
   return (
-    <>
-      <div style={{ color: '#e94d1c', float: 'left', paddingBottom: 10 }}>
+    <div style={{ padding: 50 }}>
+      <div style={{ color: '#e94d1c', float: 'right', paddingBottom: 10 }}>
         <Dropdown
           placeholder="Sort Restaurant"
-          fluid
           selection
           options={sortValues}
           onChange={onSortItemClicked}
@@ -76,24 +107,27 @@ function RestaurantList() {
         />
       </div>
       <Grid>
-        <Grid.Row>
-          <Grid.Column className="tbody" style={{ textAlign: 'center' }}>
-            {restaurants.length > 0
-              ? restaurants.map(restaurant => (
-                  <RestaurantDescriptionCard
-                    restaurant={restaurant}
-                    onChangeFavorite={onChangeFavorite}
-                    sortingValue={sortingValue}
-                    isFavorite={favorites.some(
-                      favorite => favorite === restaurant.name,
-                    )}
-                  />
-                ))
-              : null}
-          </Grid.Column>
+        <Grid.Row className="tbody" style={{ textAlign: 'center' }}>
+          {restaurants.length > 0
+            ? restaurants.map(restaurant => (
+                <RestaurantDescriptionCard
+                  restaurant={restaurant}
+                  onChangeFavorite={onChangeFavorite}
+                  sortingValue={sortingValue}
+                  isFavorite={favorites.some(
+                    favorite => favorite === restaurant.name,
+                  )}
+                  key={restaurant.name}
+                />
+              ))
+            : restaurants.length === 0 && (
+                <Card style={{ color: '#e94d1c', fontWeight: 'bold' }}>
+                  No data to display!
+                </Card>
+              )}
         </Grid.Row>
       </Grid>
-    </>
+    </div>
   );
 }
 

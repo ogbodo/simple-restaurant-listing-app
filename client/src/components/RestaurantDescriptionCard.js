@@ -25,7 +25,16 @@ function RestaurantDescriptionCard(props) {
       break;
   }
   return (
-    <div className="restaurantCardStyle">
+    <div
+      className="restaurantCardStyle"
+      style={{
+        width: '300px',
+        height: '250px',
+        float: 'left',
+        margin: '10px',
+        color: '#000',
+      }}
+    >
       <div
         style={{
           borderTop: 'solid 10px #dbddf9',
@@ -34,7 +43,7 @@ function RestaurantDescriptionCard(props) {
         <div
           style={{
             width: '300px',
-            height: '200px',
+            height: '250px',
             paddingTop: '2px',
             boxShadow: '1px 2px 5px #eee',
           }}

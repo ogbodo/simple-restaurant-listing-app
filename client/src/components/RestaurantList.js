@@ -87,26 +87,26 @@ function RestaurantList() {
 
   return (
     <div style={{ padding: 50 }}>
-      <div style={{ color: '#e94d1c', float: 'right', paddingBottom: 10 }}>
-        <Dropdown
-          placeholder="Sort Restaurant"
-          selection
-          options={sortValues}
-          onChange={onSortItemClicked}
-          name="sortRestaurants"
-        />
-      </div>
-      <div style={{ color: '#e94d1c', float: 'right', paddingBottom: 10 }}>
-        <Input
-          loading={searchState.isLoading}
-          icon="search"
-          placeholder={'Search...'}
-          style={{ color: '#e94d1c' }}
-          onChange={onChange}
-          value={searchState.searchValue}
-        />
-      </div>
       <Grid>
+        <div style={{ color: '#e94d1c', float: 'right', paddingBottom: 10 }}>
+          <Dropdown
+            placeholder="Sort Restaurant"
+            selection
+            options={sortValues}
+            onChange={onSortItemClicked}
+            name="sortRestaurants"
+          />
+        </div>
+        <div style={{ color: '#e94d1c', float: 'right', paddingBottom: 10 }}>
+          <Input
+            loading={searchState.isLoading}
+            icon="search"
+            placeholder={'Search...'}
+            style={{ color: '#e94d1c' }}
+            onChange={onChange}
+            value={searchState.searchValue}
+          />
+        </div>
         <Grid.Row className="tbody" style={{ textAlign: 'center' }}>
           {restaurants.length > 0
             ? restaurants.map(restaurant => (

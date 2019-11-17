@@ -31,7 +31,10 @@ export function sortRestaurantsByOpeningState() {
 export function searchRestaurants(name: string) {
   const restaurantsList: IRestaurant[] = getRestaurants();
 
-  return restaurantsList.find(restaurant => restaurant.name === name);
+  return restaurantsList.find(
+    restaurant =>
+      restaurant.name.toLocaleLowerCase() === name.toLocaleLowerCase(),
+  );
 }
 
 //The parameter restaurantsList will get initialized by default if it's not supplied

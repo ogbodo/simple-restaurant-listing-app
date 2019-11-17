@@ -50,5 +50,3 @@ export const sortValues = [
     value: 'topRestaurants',
   },
 ];
-
-export const FAVORITES = 'favorites';

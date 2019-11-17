@@ -14,6 +14,10 @@ router.get('/restaurants/:name', async (req, res) => {
   const { name } = req.params;
   const restaurant = await searchRestaurants(name);
 
+  if (!restaurant) {
+    res.status(404).json({ message: 'Not found!' });
+    return;
+  }
   res.status(200).json({ data: restaurant });
 });
 

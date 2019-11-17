@@ -38,5 +38,15 @@ describe('Server', () => {
         },
       });
     });
+
+    test(' should return 404 status code', async () => {
+      const restaurantName = 'Wrong Name';
+      const result = await request(app)
+        .get(`/api/restaurants/${restaurantName}`)
+        .expect('Content-Type', /json/);
+      expect(result.status).toBe(404);
+      expect(result.body.message).toBeDefined();
+      expect(result.body.message).toEqual('Not found!');
+    });
   });
 });

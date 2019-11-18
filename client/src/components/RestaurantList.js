@@ -71,19 +71,20 @@ function RestaurantList() {
     if (searchState.isLoading) {
       searchRestaurants(searchState.searchValue)
         .then(restaurant => {
-          const { status } = restaurant;
+          const { status, error } = restaurant;
+          if (error) {
+            setSearchState(oldState => {
+              return { ...oldState, isLoading: false, data: [] };
+            });
+          }
 
           if (status === 200) {
             setSearchState(oldState => {
-              return { ...oldState, data: [restaurant.data] };
+              return { ...oldState, data: [restaurant.data], isLoading: false };
             });
           } else {
             toast.error(restaurant.statusText);
           }
-
-          setSearchState(oldState => {
-            return { ...oldState, isLoading: false };
-          });
         })
         .catch(error => {
           toast.error(error.message);

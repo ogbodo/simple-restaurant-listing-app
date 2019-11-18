@@ -2,12 +2,14 @@ import React from 'react';
 import { Radio } from 'semantic-ui-react';
 
 function RestaurantDescriptionCard(props) {
-  const {
-    restaurant: { name, status },
-    onChangeFavorite,
-    isFavorite,
-    sortingValue,
-  } = props;
+  const { restaurant, onChangeFavorite, isFavorite, sortedBy } = props;
+  const { name, status, sortingValues } = restaurant;
+
+  const currentSortValue = sortedBy.value || sortedBy;
+  let sortValue = '';
+  if (sortingValues[currentSortValue] || sortingValues[currentSortValue] >= 0) {
+    sortValue = `Sorted Value: ${sortingValues[currentSortValue]}`;
+  }
 
   let color = 'red',
     openingState = 'Closed';
@@ -67,7 +69,12 @@ function RestaurantDescriptionCard(props) {
             />
           </div>
           <div style={{ paddingTop: '40px' }}>
-            <h4>{`Sorted By: ${sortingValue.text}`}</h4>
+            <h4
+              style={{ textAlign: 'left', paddingLeft: '30px' }}
+            >{`Sorted By: ${currentSortValue}`}</h4>
+            <h4 style={{ textAlign: 'left', paddingLeft: '30px' }}>
+              {sortValue}
+            </h4>
           </div>
         </div>
       </div>

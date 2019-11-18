@@ -97,7 +97,7 @@ function RestaurantList() {
       <RestaurantDescriptionCard
         restaurant={restaurant}
         onChangeFavorite={onChangeFavorite}
-        sortingValue={sortingValue}
+        sortedBy={sortingValue.key ? sortingValue : 'None'}
         isFavorite={favorites.some(favorite => favorite === restaurant.name)}
         key={restaurant.name}
       />

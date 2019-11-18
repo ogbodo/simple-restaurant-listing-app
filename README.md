@@ -21,3 +21,5 @@
 => yarn test
 ```
 The server part of this system is already designed and exposes a set of REST endpoints via the `/api` route endpoint.
+
+This project is hosted and [here](https://github.com/bondz/node-express-react-ts) is the link.

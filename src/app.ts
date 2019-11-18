@@ -3,6 +3,8 @@ import express from 'express';
 import cors from 'cors';
 import compression from 'compression';
 import morgan from 'morgan';
+import path from 'path';
+import fs from 'fs';
 
 import apiRouter from './routes/index';
 
@@ -44,6 +46,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use('/api', apiRouter);
+
+const clientPath = path.join(__dirname, '../', 'client/build');
+
+if (fs.existsSync(clientPath)) {
+  app.use(express.static(clientPath));
+  app.get('/*', (_req, res) => {
+    res.sendFile(path.join(clientPath, 'index.html'));
+  });
+}
 
 // catch 404 and forward to error handler
 app.use(function(

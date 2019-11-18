@@ -7,8 +7,10 @@
   "private": true,
   "scripts": {
     "postinstall": "tsc",
+    "build": "scripts/build.sh",
     "start": "bin/www",
-    "test": "jest"
+    "test": "jest",
+    "client:start": "cd client; yarn start"
   },
   "dependencies": {
     "@types/jest": "24.0.23",
